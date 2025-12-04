@@ -1,0 +1,92 @@
+---
+// src/pages/index.astro
+
+import MainLayout from "../layouts/MainLayout.astro";
+import { projects } from "../data/projects";
+
+// Человекочитаемые подписи для категорий
+const CATEGORY_LABELS = {
+  all: "Всё",
+  graphic: "Графический дизайн",
+  navigation: "Навигация",
+  "3d": "3D",
+} as const;
+
+// Собираем уникальные категории из данных
+const allCategories = Array.from(
+  new Set(projects.flatMap((p) => p.categories))
+).sort();
+---
+
+<MainLayout class="main" title="Портфолио">
+
+  <!-- ОДНА кнопка + выпадающий список -->
+  <section class="filter">
+	<div class="cart">
+    <img src="/icon-cart.svg" alt="" class="cart-cart-icon" />
+		<img src="/icon-ruble.svg" alt="" class="cart-ruble-icon" />
+	</div>
+	<div class="filter-dropdown">
+		<button
+		class="filter-toggle"
+		type="button"
+		data-current-filter="all"
+		>
+		<img src="/icon-search.svg" alt="" class="filter-toggle-icon" />
+		<span class="filter-toggle-label">Графический дизайн</span>
+		</button>
+
+		<div class="filter-menu">
+		<button
+			class="filter-option active"
+			type="button"
+			data-filter="all"
+		>
+			Графический дизайн
+		</button>
+
+		{allCategories.map((cat) => (
+			<button
+			class="filter-option"
+			type="button"
+			data-filter={cat}
+			>
+			{cat}
+			</button>
+		))}
+		</div>
+	</div>
+  </section>
+
+  <!-- Сетка проектов -->
+<section class="projects-grid">
+  {projects.map((project) => (
+    <article
+      class="project-card"
+      data-categories={project.categories.join(",")}
+    >
+      <a href={`/projects/${project.slug}`} class="project-link">
+        <div class="project-image-wrapper">
+          <img
+            src={project.cover}
+            alt={project.title}
+            class="project-cover"
+          />
+        </div>
+
+        <div class="project-text">
+          <div class="project-description">
+            <img src="/icon-info.svg" alt="" class="project-info-icon" />
+            {project.short}
+          </div>
+          <div class="project-title">
+            {project.title}
+          </div>
+        </div>
+      </a>
+    </article>
+  ))}
+</section>
+
+  <script src="/js/filter.js" defer></script>
+</MainLayout>
