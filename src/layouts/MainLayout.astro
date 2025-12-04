@@ -18,7 +18,11 @@ const { title = "Портфолио" } = Astro.props;
       <nav class="nav">
         <a
           href="/"
-          class={`nav-link nav-portfolio ${Astro.url.pathname === "/" ? "active" : ""}`}
+          class={`nav-link nav-portfolio ${
+            Astro.url.pathname === "/" || Astro.url.pathname.startsWith("/projects/")
+              ? "active"
+              : ""
+          }`}
         >
           Портфолио
         </a>
@@ -29,7 +33,9 @@ const { title = "Портфолио" } = Astro.props;
           Кто я?
         </a>
       </nav>
-      <Logo class="logo" />
+      <a href="/" class="logo-link">
+        <Logo class="logo" />
+      </a>
       <div class="header-text">
         <div>
           <p>

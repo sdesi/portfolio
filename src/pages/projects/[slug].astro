@@ -1,0 +1,32 @@
+---
+// src/pages/projects/[slug].astro
+
+import MainLayout from "../../layouts/MainLayout.astro";
+import { projects } from "../../data/projects";
+import type { Project } from "../../data/projects";
+
+// Генерируем статические маршруты /projects/slug
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props as Props;
+---
+
+<MainLayout title={project.title}>
+  <!-- Тот же фон, что и на главной -->
+  <section class="bg"></section>
+
+  <!-- Пока просто пустой каркас под будущий контент проекта -->
+  <section class="project-page">
+    <h1 class="project-page-title">{project.title}</h1>
+    <!-- сюда потом будем добавлять блоки, картинки, текст и т.д. -->
+  </section>
+</MainLayout>
