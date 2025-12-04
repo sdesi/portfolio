@@ -3,86 +3,105 @@ import "../styles/variables.css";
 import "../styles/reset.css";
 import "../styles/global.css";
 import Logo from "../assets/logo.svg";
-const { title = "Портфолио" } = Astro.props;
+
+interface LayoutProps {
+  title?: string;
+  hideScrollbar?: boolean;
+}
+
+const { title = "Портфолио", hideScrollbar = false } =
+  Astro.props as LayoutProps;
+
+// Текущий путь
+const path = Astro.url.pathname;
+
+// Определяем, что мы на странице проекта
+const isProjectPage = path.startsWith("/projects/");
+
+// Определяем активные кнопки
+const isPortfolioActive = path === "/" || path.startsWith("/projects/");
+const isWhoActive = path.startsWith("/about");
 ---
 
-<html lang="ru">
+<html lang="ru" class={hideScrollbar ? "no-scrollbar" : ""}>
   <head>
     <meta charset="utf-8" />
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/styles/global.css" />
   </head>
+
   <body>
     <header class="header">
+
+      <!-- Навигация — всегда видна -->
       <nav class="nav">
         <a
           href="/"
-          class={`nav-link nav-portfolio ${
-            Astro.url.pathname === "/" || Astro.url.pathname.startsWith("/projects/")
-              ? "active"
-              : ""
-          }`}
+          class={`nav-link nav-portfolio ${isPortfolioActive ? "active" : ""}`}
         >
           Портфолио
         </a>
+
         <a
           href="/about"
-          class={`nav-link nav-who ${Astro.url.pathname.startsWith("/about") ? "active" : ""}`}
+          class={`nav-link nav-who ${isWhoActive ? "active" : ""}`}
         >
           Кто я?
         </a>
       </nav>
-      <a href="/" class="logo-link">
-        <Logo class="logo" />
-      </a>
-      <div class="header-text">
-        <div>
-          <p>
-            <strong>ЗАО „ВыксаЖилСтройСервис“</strong><br />г. о. г. Выкса, с.
-            Мотмос,<br />ул. Мироновка 36<br /><br />
+
+      <!-- Если НЕ страница проекта → показываем логотип + текст + часы -->
+      { !isProjectPage && (
+        <>
+          <a href="/" class="logo-link">
+            <Logo class="logo" />
+          </a>
+
+          <div class="header-text">
             <div>
-              <a class="header-tg-icon" href="tg.me">TG</a>
-              <a href="tel:+79994244242">+7 999 424-42-42</a>
+              <p>
+                <strong>ЗАО „ВыксаЖилСтройСервис“</strong><br />
+                г. о. г. Выкса, с. Мотмос,<br />
+                ул. Мироновка 36<br /><br />
+                <div>
+                  <a class="header-tg-icon" href="tg.me">TG</a>
+                  <a href="tel:+79994244242">+7 999 424-42-42</a>
+                </div>
+              </p>
             </div>
-          </p>
-        </div>
-        <section class="pixel-clock">
-          <div class="clock-grid">
-            <!-- 1-я строка -->
-            <span class="clock-cell cell-11">11</span>
-            <span class="clock-cell cell-12">12</span>
-            <span class="clock-cell cell-1">1</span>
 
-            <!-- 2-я -->
-            <span class="clock-cell cell-10">10</span>
-            <span class="clock-cell cell-2">2</span>
+            <section class="pixel-clock">
+              <div class="clock-grid">
+                <span class="clock-cell cell-11">11</span>
+                <span class="clock-cell cell-12">12</span>
+                <span class="clock-cell cell-1">1</span>
 
-            <!-- 3-я -->
-            <span class="clock-cell cell-9">9</span>
-            <span class="clock-cell cell-3">3</span>
+                <span class="clock-cell cell-10">10</span>
+                <span class="clock-cell cell-2">2</span>
 
-            <!-- 4-я -->
-            <span class="clock-cell cell-8">8</span>
-            <span class="clock-cell cell-4">4</span>
+                <span class="clock-cell cell-9">9</span>
+                <span class="clock-cell cell-3">3</span>
 
-            <!-- 5-я -->
-            <span class="clock-cell cell-7">7</span>
-            <span class="clock-cell cell-6">6</span>
-            <span class="clock-cell cell-5">5</span>
+                <span class="clock-cell cell-8">8</span>
+                <span class="clock-cell cell-4">4</span>
 
-            <!-- центр -->
-            <div class="clock-center">
-              <div class="clock-hand clock-hand-hour"></div>
-              <div class="clock-hand clock-hand-minute"></div>
-              <div class="clock-hand clock-hand-second"></div>
-              <div class="clock-center-dot"></div>
-            </div>
+                <span class="clock-cell cell-7">7</span>
+                <span class="clock-cell cell-6">6</span>
+                <span class="clock-cell cell-5">5</span>
+
+                <div class="clock-center">
+                  <div class="clock-hand clock-hand-hour"></div>
+                  <div class="clock-hand clock-hand-minute"></div>
+                  <div class="clock-hand clock-hand-second"></div>
+                  <div class="clock-center-dot"></div>
+                </div>
+              </div>
+            </section>
+
+            <script src="/js/pixel-clock.js" defer></script>
           </div>
-        </section>
-
-        <script src="/js/pixel-clock.js" defer></script>
-      </div>
+        </>
+      )}
     </header>
 
     <main>

@@ -65,12 +65,18 @@ button:focus:not(:focus-visible) {
     outline: none;
 }
 
+
+
 /* Ensure responsive media */
-img, picture, video, canvas, svg {
+img, picture, video, canvas, svg, .logo-link {
     display: block;
     max-width: 100%;
     height: auto;
 }
+
+.project-board img, picture, video, canvas, svg {
+    max-width: inherit;
+} 
 
 /* Remove textarea resize */
 textarea {

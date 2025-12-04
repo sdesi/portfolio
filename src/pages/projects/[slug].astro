@@ -5,7 +5,20 @@ import MainLayout from "../../layouts/MainLayout.astro";
 import { projects } from "../../data/projects";
 import type { Project } from "../../data/projects";
 
-// Генерируем статические маршруты /projects/slug
+import ProjectBoard from "../../components/ProjectBoard.astro";
+import type { BoardBlock, BoardView } from "../../types/Board";
+import * as DetaliBoard from "../../data/boards/detali";
+
+// Все доски по slug проекта
+const boardsBySlug: Record<
+  string,
+  { blocks: BoardBlock[]; initialView: BoardView }
+> = {
+  detali: DetaliBoard,
+  // сюда добавишь остальные проекты:
+  // "drugoy-slug": OtherBoard,
+};
+
 export function getStaticPaths() {
   return projects.map((project) => ({
     params: { slug: project.slug },
@@ -18,15 +31,25 @@ interface Props {
 }
 
 const { project } = Astro.props as Props;
+
+// может быть undefined, если для этого проекта доска ещё не задана
+const boardData = boardsBySlug[project.slug];
 ---
 
 <MainLayout title={project.title}>
-  <!-- Тот же фон, что и на главной -->
-  <section class="bg"></section>
+  <!-- Фоновая доска (только если есть данные для этого проекта) -->
+  {boardData && (
+    <div class="project-board-background">
+      <ProjectBoard
+        blocks={boardData.blocks}
+        initialView={boardData.initialView}
+      />
+    </div>
+  )}
 
-  <!-- Пока просто пустой каркас под будущий контент проекта -->
-  <section class="project-page">
-    <h1 class="project-page-title">{project.title}</h1>
-    <!-- сюда потом будем добавлять блоки, картинки, текст и т.д. -->
-  </section>
+  <!-- Твой обычный контент страницы проекта -->
+  <main class="project-content">
+    <!-- <h1>{project.title}</h1> -->
+    <!-- сюда потом добавишь текст, блоки и т.п. -->
+  </main>
 </MainLayout>
