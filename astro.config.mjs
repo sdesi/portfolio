@@ -2,6 +2,6 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  // GitHub Pages: сайт живёт в /portfolio/
+  site: "https://sdesi.github.io/portfolio",
   base: "/portfolio/",
 });

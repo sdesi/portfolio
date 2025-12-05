@@ -4,7 +4,7 @@ export const blocks: BoardBlock[] = [
   {
     id: "hero",
     type: "image",
-    src: "/img/detali/60-optimized.webp",
+    src: "img/detali/60-optimized.webp",
     x: 200,
     y: 700,
     width: 351
