@@ -5,7 +5,7 @@ export type Project = {
   title: string;        // название проекта
   short: string;        // описание для главной
   categories: string[]; // ["graphic", "navigation", "3d", ...]
-  cover: string;        // относительный путь к обложке, БЕЗ ведущего "/"
+  cover: string;        // относительный путь к обложке БЕЗ ведущего "/"
 };
 
 export const projects: Project[] = [
@@ -14,8 +14,6 @@ export const projects: Project[] = [
     title: "ЖК Детали",
     short: "Навигация для ЖК бизнес-класса",
     categories: ["navigation"],
-    // важно: без начального "/", потому что base добавится в index.astro
     cover: "img/detali/60-optimized.webp",
   },
-  // сюда добавишь остальные проекты по аналогии
 ];

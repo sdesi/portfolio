@@ -4,7 +4,6 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import { projects } from "../data/projects";
 
-// базовый префикс для GitHub Pages ("/" локально, "/portfolio-main/" в проде)
 const base = import.meta.env.BASE_URL;
 
 // Человекочитаемые подписи для категорий
@@ -23,7 +22,7 @@ const allCategories = Array.from(
 
 <MainLayout title="Портфолио" hideScrollbar={true}>
 
-  <!-- ОДНА кнопка + выпадающий список -->
+  <!-- Фильтр -->
   <section class="filter">
     <div class="cart">
       <img src={`${base}icon-cart.svg`} alt="" class="cart-cart-icon" />
