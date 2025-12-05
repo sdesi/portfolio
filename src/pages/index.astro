@@ -6,22 +6,12 @@ import { projects } from "../data/projects";
 
 const base = import.meta.env.BASE_URL;
 
-// Человекочитаемые подписи для категорий
-const CATEGORY_LABELS = {
-  all: "Всё",
-  graphic: "Графический дизайн",
-  navigation: "Навигация",
-  "3d": "3D",
-} as const;
-
-// Собираем уникальные категории из данных
 const allCategories = Array.from(
   new Set(projects.flatMap((p) => p.categories))
 ).sort();
 ---
 
 <MainLayout title="Портфолио" hideScrollbar={true}>
-
   <!-- Фильтр -->
   <section class="filter">
     <div class="cart">
@@ -86,9 +76,7 @@ const allCategories = Array.from(
               />
               {project.short}
             </div>
-            <div class="project-title">
-              {project.title}
-            </div>
+            <div class="project-title">{project.title}</div>
           </div>
         </a>
       </article>
