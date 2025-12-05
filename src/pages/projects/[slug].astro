@@ -2,21 +2,15 @@
 // src/pages/projects/[slug].astro
 
 import MainLayout from "../../layouts/MainLayout.astro";
-import { projects } from "../../data/projects";
-import type { Project } from "../../data/projects";
+import { projects, type Project } from "../../data/projects";
 
 import ProjectBoard from "../../components/ProjectBoard.astro";
 import type { BoardBlock, BoardView } from "../../types/Board";
 import * as DetaliBoard from "../../data/boards/detali";
 
-// Все доски по slug проекта
-const boardsBySlug: Record<
-  string,
-  { blocks: BoardBlock[]; initialView: BoardView }
-> = {
+// словарь досок по slug проекта
+const boardsBySlug: Record<string, { blocks: BoardBlock[]; initialView: BoardView }> = {
   detali: DetaliBoard,
-  // сюда добавишь остальные проекты:
-  // "drugoy-slug": OtherBoard,
 };
 
 export function getStaticPaths() {
@@ -26,18 +20,17 @@ export function getStaticPaths() {
   }));
 }
 
-interface Props {
+type Props = {
   project: Project;
-}
+};
 
 const { project } = Astro.props as Props;
 
-// может быть undefined, если для этого проекта доска ещё не задана
+// может быть undefined, если для проекта нет доски
 const boardData = boardsBySlug[project.slug];
 ---
 
 <MainLayout title={project.title}>
-  <!-- Фоновая доска (только если есть данные для этого проекта) -->
   {boardData && (
     <div class="project-board-background">
       <ProjectBoard
@@ -47,9 +40,9 @@ const boardData = boardsBySlug[project.slug];
     </div>
   )}
 
-  <!-- Твой обычный контент страницы проекта -->
-  <main class="project-content">
-    <!-- <h1>{project.title}</h1> -->
-    <!-- сюда потом добавишь текст, блоки и т.п. -->
-  </main>
+  <section class="project-content">
+    <h1>{project.title}</h1>
+    <p>{project.short}</p>
+    <!-- сюда позже добавишь остальные блоки проекта -->
+  </section>
 </MainLayout>

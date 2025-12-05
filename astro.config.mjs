@@ -1,5 +1,7 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
+// astro.config.mjs
+import { defineConfig } from "astro/config";
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  // если репозиторий НЕ portfolio-main, измени base ниже
+  base: "/portfolio-main/",
+});

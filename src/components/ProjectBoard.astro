@@ -3,12 +3,14 @@
 
 import type { BoardBlock, BoardView } from "../types/Board";
 
-interface Props {
+type Props = {
   blocks: BoardBlock[];
   initialView: BoardView;
-}
+};
 
 const { blocks, initialView } = Astro.props as Props;
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <div class="project-board">
@@ -17,13 +19,14 @@ const { blocks, initialView } = Astro.props as Props;
     class="project-board-inner"
     data-camera-x={initialView.x}
     data-camera-y={initialView.y}
-    style={`transform: translate(${initialView.x}px, ${initialView.y}px);`}
+    data-camera-zoom={initialView.zoom}
+    style={`transform: translate(${initialView.x}px, ${initialView.y}px) scale(${initialView.zoom});`}
   >
-    {blocks.map((block: BoardBlock) =>
+    {blocks.map((block) =>
       block.type === "image" ? (
         <img
           class="board-block board-image"
-          src={block.src!}
+          src={block.src}
           alt={block.id}
           style={`left:${block.x}px; top:${block.y}px; width:${block.width}px;`}
         />
@@ -38,5 +41,5 @@ const { blocks, initialView } = Astro.props as Props;
     )}
   </div>
 
-  <script src="/js/board-controls.js" defer></script>
+  <script src={`${base}js/board-controls.js`} defer></script>
 </div>

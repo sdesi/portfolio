@@ -4,23 +4,26 @@ import "../styles/reset.css";
 import "../styles/global.css";
 import Logo from "../assets/logo.svg";
 
-interface LayoutProps {
+type LayoutProps = {
   title?: string;
   hideScrollbar?: boolean;
-}
+};
 
 const { title = "Портфолио", hideScrollbar = false } =
   Astro.props as LayoutProps;
 
-// Текущий путь
+// текущий путь
 const path = Astro.url.pathname;
 
-// Определяем, что мы на странице проекта
+// мы на странице проекта?
 const isProjectPage = path.startsWith("/projects/");
 
-// Определяем активные кнопки
+// активность кнопок
 const isPortfolioActive = path === "/" || path.startsWith("/projects/");
 const isWhoActive = path.startsWith("/about");
+
+// base для GitHub Pages
+const base = import.meta.env.BASE_URL;
 ---
 
 <html lang="ru" class={hideScrollbar ? "no-scrollbar" : ""}>
@@ -28,22 +31,25 @@ const isWhoActive = path.startsWith("/about");
     <meta charset="utf-8" />
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Дополнительный линк, если хочешь, чтобы CSS был явно подключен как файл -->
+    <link rel="stylesheet" href={`${base}styles/global.css`} />
   </head>
 
   <body>
     <header class="header">
-
       <!-- Навигация — всегда видна -->
       <nav class="nav">
         <a
-          href="/"
-          class={`nav-link nav-portfolio ${isPortfolioActive ? "active" : ""}`}
+          href={base}
+          class={`nav-link nav-portfolio ${
+            isPortfolioActive ? "active" : ""
+          }`}
         >
           Портфолио
         </a>
 
         <a
-          href="/about"
+          href={`${base}about/`}
           class={`nav-link nav-who ${isWhoActive ? "active" : ""}`}
         >
           Кто я?
@@ -53,7 +59,7 @@ const isWhoActive = path.startsWith("/about");
       <!-- Если НЕ страница проекта → показываем логотип + текст + часы -->
       { !isProjectPage && (
         <>
-          <a href="/" class="logo-link">
+          <a href={base} class="logo-link">
             <Logo class="logo" />
           </a>
 
@@ -98,7 +104,7 @@ const isWhoActive = path.startsWith("/about");
               </div>
             </section>
 
-            <script src="/js/pixel-clock.js" defer></script>
+            <script src={`${base}js/pixel-clock.js`} defer></script>
           </div>
         </>
       )}
