@@ -8,7 +8,7 @@ import ProjectBoard from "../../components/ProjectBoard.astro";
 import type { BoardBlock, BoardView } from "../../types/Board";
 import * as DetaliBoard from "../../data/boards/detali";
 
-// словарь досок по slug проекта
+// доски по slug
 const boardsBySlug: Record<string, { blocks: BoardBlock[]; initialView: BoardView }> = {
   detali: DetaliBoard,
 };
@@ -25,8 +25,6 @@ type Props = {
 };
 
 const { project } = Astro.props as Props;
-
-// может быть undefined, если для проекта нет доски
 const boardData = boardsBySlug[project.slug];
 ---
 
