@@ -4,26 +4,21 @@ import "../styles/reset.css";
 import "../styles/global.css";
 import Logo from "../assets/logo.svg";
 
-type LayoutProps = {
+interface LayoutProps {
   title?: string;
   hideScrollbar?: boolean;
-};
+}
 
 const { title = "Портфолио", hideScrollbar = false } =
   Astro.props as LayoutProps;
 
-// текущий путь
+// Текущий путь
 const path = Astro.url.pathname;
 
-// мы на странице проекта?
-const isProjectPage = path.startsWith("/projects/");
 
-// активность кнопок
+// Определяем активные кнопки
 const isPortfolioActive = path === "/" || path.startsWith("/projects/");
 const isWhoActive = path.startsWith("/about");
-
-// base для GitHub Pages
-const base = import.meta.env.BASE_URL;
 ---
 
 <html lang="ru" class={hideScrollbar ? "no-scrollbar" : ""}>
@@ -31,25 +26,22 @@ const base = import.meta.env.BASE_URL;
     <meta charset="utf-8" />
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Дополнительный линк, если хочешь, чтобы CSS был явно подключен как файл -->
-    <link rel="stylesheet" href={`${base}styles/global.css`} />
   </head>
 
   <body>
     <header class="header">
+
       <!-- Навигация — всегда видна -->
       <nav class="nav">
         <a
-          href={base}
-          class={`nav-link nav-portfolio ${
-            isPortfolioActive ? "active" : ""
-          }`}
+          href="/"
+          class={`nav-link nav-portfolio ${isPortfolioActive ? "active" : ""}`}
         >
           Портфолио
         </a>
 
         <a
-          href={`${base}about/`}
+          href="/about"
           class={`nav-link nav-who ${isWhoActive ? "active" : ""}`}
         >
           Кто я?
@@ -57,9 +49,8 @@ const base = import.meta.env.BASE_URL;
       </nav>
 
       <!-- Если НЕ страница проекта → показываем логотип + текст + часы -->
-      { !isProjectPage && (
         <>
-          <a href={base} class="logo-link">
+          <a href="/" class="logo-link">
             <Logo class="logo" />
           </a>
 
@@ -104,10 +95,10 @@ const base = import.meta.env.BASE_URL;
               </div>
             </section>
 
-            <script src={`${base}js/pixel-clock.js`} defer></script>
+            <script src="/js/pixel-clock.js" defer></script>
           </div>
         </>
-      )}
+
     </header>
 
     <main>

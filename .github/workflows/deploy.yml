@@ -1,0 +1,41 @@
+# .github/workflows/deploy.yml
+# по гайду Astro: https://docs.astro.build/en/guides/deploy/github/
+name: Deploy to GitHub Pages
+
+on:
+  # деплой при каждом пуше в main
+  push:
+    branches: [main]
+  # и возможность запустить руками из вкладки Actions
+  workflow_dispatch:
+
+# права для деплоя на GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
+        # можно явно указать версию Node / пакетного менеджера, но необязательно:
+        # with:
+        #   node-version: 22
+        #   package-manager: npm
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
